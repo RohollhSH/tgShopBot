@@ -6,14 +6,16 @@ function bot($data){
     return json_decode(file_get_contents("https://api.telegram.org/bot".API_TOKEN."/".$data),true);
 }
 function message($chat_id,$msg,$markup=null,$parse_mode=null){
-    if($parse_mode!=null){
+    //notice using urlencode() function at any $msg creates problem if you use "HTML" parse_mode.
+    //not sure how to fix it maybe dont let any "HTML" parse_mode in message function here at all.
+    if($parse_mode!=null or $parse_mode!='HTML'){
         if($markup!=null)
         {
-            bot("sendMessage?chat_id=".$chat_id."&text=".$msg."&reply_markup=".$markup."&parse_mode=".$parse_mode);
+            bot("sendMessage?chat_id=".$chat_id."&text=".$msg."&reply_markup=".$markup."&parse_mode=Markdown");
         }
         else
         {
-            bot("sendMessage?chat_id=".$chat_id."&text=".$msg."&parse_mode=".$parse_mode);
+            bot("sendMessage?chat_id=".$chat_id."&text=".$msg."&parse_mode=Markdown");
         }
     }else{
         if($markup!=null)
